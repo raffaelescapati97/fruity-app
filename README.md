@@ -18,7 +18,7 @@ Fruity e un'applicazione Angular per esplorare i frutti e conoscere i loro valor
 - RxJS per le richieste HTTP.
 - FormsModule per la barra di ricerca.
 - FruityVice API come servizio dati esterno.
-- Firebase Hosting per il deploy.
+- Firebase Hosting e Cloud Functions per il deploy.
 - Google Fonts (DM Sans) per la tipografia.
 
 Non sono presenti librerie UI esterne: l'interfaccia usa CSS locale per mantenere il progetto leggero e facilmente leggibile.
@@ -76,11 +76,13 @@ firebase use --add
 
 Selezionare il progetto Firebase quando richiesto.
 
-4. Creare la build e pubblicare:
+4. Il proxy API in `functions/` usa Cloud Functions per inoltrare le richieste a FruityVice in produzione. Per abilitarlo, il progetto Firebase deve essere sul piano Blaze con un account di fatturazione associato. L'utilizzo gratuito mensile di Cloud Functions copre i volumi ridotti di questo progetto; Firebase applica costi solo oltre le soglie previste dal piano.
+
+5. Creare la build e pubblicare Hosting e proxy API:
 
 ```bash
 npm run build
-firebase deploy --only hosting
+firebase deploy --only functions,hosting
 ```
 
 Firebase mostrerà l'URL pubblico al termine del deploy. Inserire quell'URL in questa sezione del README prima di consegnare il repository:
