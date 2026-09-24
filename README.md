@@ -85,7 +85,7 @@ firebase deploy --only hosting
 
 Firebase mostrerà l'URL pubblico al termine del deploy. Inserire quell'URL in questa sezione del README prima di consegnare il repository:
 
-**Demo online:** `<URL_FIREBASE_DA_INSERIRE_DOPO_IL_DEPLOY>`
+**Demo online:** https://fruity-app-6119b.web.app
 
 ## API
 
