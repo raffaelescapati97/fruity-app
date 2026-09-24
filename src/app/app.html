@@ -1,0 +1,23 @@
+<div class="app-shell">
+  <header class="topbar">
+    <a class="brand" href="/" (click)="$event.preventDefault(); resetSearch()" aria-label="Torna alla home di Fruity"><span class="brand-mark" aria-hidden="true">*</span><span>Fruity</span></a>
+    <span class="topbar-note">Scopri cosa c'e nel tuo frutto</span>
+  </header>
+  <main>
+    <section class="hero" aria-labelledby="page-title">
+      <div class="hero-copy"><p class="eyebrow">Nutrizione, senza complicazioni</p><h1 id="page-title">Un frutto alla volta,<br /><em>piu consapevole.</em></h1><p class="hero-description">Esplora la nostra raccolta e scopri i valori nutrizionali dei frutti che porti a tavola.</p></div>
+      <div class="hero-orbit" aria-hidden="true"><span class="fruit-fragment fragment-one">orange</span><span class="fruit-fragment fragment-two">pear</span><span class="fruit-fragment fragment-three">berry</span><span class="fruit-plate">apple</span></div>
+    </section>
+    <section class="search-section" aria-label="Cerca un frutto">
+      <form class="search-form" (ngSubmit)="search()"><label for="fruit-search">Cerca un frutto</label><div class="search-control"><span aria-hidden="true">?</span><input id="fruit-search" name="fruit-search" [(ngModel)]="searchTerm" placeholder="Es. banana, apple, mango..." autocomplete="off" /><button type="submit" [disabled]="isSearching() || !searchTerm.trim()">Cerca</button></div></form>
+      @if (searchTerm.trim()) { <button class="reset-button" type="button" (click)="resetSearch()">Mostra tutti</button> }
+    </section>
+    @if (selectedFruit(); as fruit) {
+      <section class="detail-panel" aria-labelledby="detail-title"><button class="close-button" type="button" (click)="closeDetails()" aria-label="Chiudi dettaglio">x</button><div class="detail-intro"><span class="detail-emoji" aria-hidden="true">{{ fruitEmoji(fruit.name) }}</span><div><p class="eyebrow">Profilo nutrizionale</p><h2 id="detail-title">{{ fruit.name }}</h2><p>{{ fruit.family }} · {{ fruit.genus }}</p></div></div><div class="nutrition-grid"><div class="nutrition-item nutrition-highlight"><span>Calorie</span><strong>{{ fruit.nutritions.calories }}</strong><small>kcal / 100g</small></div><div class="nutrition-item"><span>Carboidrati</span><strong>{{ fruit.nutritions.carbohydrates }}<small>g</small></strong><small>per 100g</small></div><div class="nutrition-item"><span>Zuccheri</span><strong>{{ fruit.nutritions.sugar }}<small>g</small></strong><small>per 100g</small></div><div class="nutrition-item"><span>Proteine</span><strong>{{ fruit.nutritions.protein }}<small>g</small></strong><small>per 100g</small></div><div class="nutrition-item"><span>Grassi</span><strong>{{ fruit.nutritions.fat }}<small>g</small></strong><small>per 100g</small></div></div></section>
+    }
+    <section class="catalog" aria-labelledby="catalog-title"><div class="section-heading"><div><p class="eyebrow">La raccolta</p><h2 id="catalog-title">Tutti i frutti</h2></div>@if (!isLoading() && !errorMessage()) { <span class="result-count">{{ fruits().length }} risultati</span> }</div>
+      @if (isLoading() || isSearching()) { <div class="status-message"><span class="loader" aria-hidden="true"></span><p>Sto preparando la raccolta...</p></div> } @else if (errorMessage()) { <div class="status-message error-message"><p>{{ errorMessage() }}</p><button type="button" (click)="searchTerm ? search() : loadFruits()">Riprova</button></div> } @else if (fruits().length === 0) { <div class="status-message"><p>Nessun frutto da mostrare.</p></div> } @else { <div class="fruit-grid">@for (fruit of fruits(); track fruit.id) { <button class="fruit-card" type="button" (click)="showDetails(fruit)" [class.is-selected]="selectedFruit()?.id === fruit.id"><span class="card-emoji" aria-hidden="true">{{ fruitEmoji(fruit.name) }}</span><span class="card-content"><span class="card-family">{{ fruit.family }}</span><strong>{{ fruit.name }}</strong><span class="card-calories">{{ fruit.nutritions.calories }} kcal <span>per 100g</span></span></span><span class="card-arrow" aria-hidden="true">-></span></button> }</div> }
+    </section>
+  </main>
+  <footer><span>Fruity</span><span>Dati nutrizionali forniti da FruityVice API</span></footer>
+</div>
